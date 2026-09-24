@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prism — Privacy Policy</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #1c1b1f;
+      background: #fffbfe;
+      padding: 48px 24px;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    header { margin-bottom: 40px; }
+    .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .logo svg { width: 28px; height: 28px; }
+    .logo span { font-size: 20px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #1c1b1f; }
+    h1 { font-size: 28px; font-weight: 700; color: #1c1b1f; margin-bottom: 6px; }
+    .meta { font-size: 14px; color: #79747e; }
+    section { margin-bottom: 36px; }
+    h2 { font-size: 18px; font-weight: 600; color: #1c1b1f; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #e8e0f0; }
+    p { margin-bottom: 12px; color: #49454f; }
+    ul { margin: 0 0 12px 20px; color: #49454f; }
+    ul li { margin-bottom: 6px; }
+    .highlight {
+      background: #f7f2fa;
+      border-left: 3px solid #6750a4;
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 12px;
+      color: #49454f;
+    }
+    a { color: #6750a4; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid #e8e0f0; font-size: 13px; color: #79747e; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header>
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L22 9L12 22L2 9Z" fill="#6750a4"/>
+          <path d="M12 2L17 9L12 22L7 9Z" fill="#9c85d4"/>
+        </svg>
+        <span>Prism</span>
+      </div>
+      <h1>Privacy Policy</h1>
+      <p class="meta">Last updated: September 24, 2026</p>
+    </header>
+
+    <div class="highlight">
+      Prism does not collect, store, transmit, or share any personal data. All processing happens entirely within your browser.
+    </div>
+
+    <section>
+      <h2>1. Overview</h2>
+      <p>Prism is a browser extension that formats and displays raw JSON responses as a readable, collapsible tree view. It operates entirely locally — no data is ever sent to any external server.</p>
+    </section>
+
+    <section>
+      <h2>2. Data We Do Not Collect</h2>
+      <p>Prism does not collect or transmit any of the following:</p>
+      <ul>
+        <li>Personal information (name, email, IP address, etc.)</li>
+        <li>Browsing history or URLs you visit</li>
+        <li>The content of JSON responses you view</li>
+        <li>JSON schemas you enter into the validator</li>
+        <li>Usage statistics or analytics</li>
+        <li>Crash reports or diagnostic data</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Local Storage</h2>
+      <p>Prism uses <code>chrome.storage</code> solely to save your preferences on your own device:</p>
+      <ul>
+        <li><strong>Theme preference</strong> — whether you last used dark or light mode</li>
+      </ul>
+      <p>This data never leaves your device and is not accessible to anyone other than you.</p>
+    </section>
+
+    <section>
+      <h2>4. Permissions Explained</h2>
+      <p>The permissions requested by Prism are the minimum required for it to function:</p>
+      <ul>
+        <li><strong>storage</strong> — saves your theme preference locally</li>
+        <li><strong>scripting</strong> — injects the formatter UI into JSON pages</li>
+        <li><strong>webRequest</strong> — detects JSON content-type responses</li>
+        <li><strong>declarativeNetRequest</strong> — rewrites JSON content-type headers so the browser renders the raw text instead of its built-in viewer</li>
+        <li><strong>host permissions (&lt;all_urls&gt;)</strong> — required because JSON APIs exist on any domain; the extension only activates on pages that return JSON</li>
+      </ul>
+      <p>None of these permissions are used to access, read, or transmit your data.</p>
+    </section>
+
+    <section>
+      <h2>5. Third-Party Services</h2>
+      <p>Prism does not integrate with any third-party services, analytics platforms, or advertising networks. No external scripts are loaded at runtime — all code is bundled locally within the extension.</p>
+    </section>
+
+    <section>
+      <h2>6. Remote Code</h2>
+      <p>Prism does not execute any remotely hosted code. All JavaScript runs from within the extension package itself, fully compliant with Chrome's Manifest V3 security requirements.</p>
+    </section>
+
+    <section>
+      <h2>7. Children's Privacy</h2>
+      <p>Prism does not knowingly collect any information from anyone, including children under the age of 13.</p>
+    </section>
+
+    <section>
+      <h2>8. Changes to This Policy</h2>
+      <p>If this privacy policy is updated, the new version will be published at the same URL with a revised "Last updated" date. Continued use of the extension after any changes constitutes acceptance of the updated policy.</p>
+    </section>
+
+    <section>
+      <h2>9. Contact</h2>
+      <p>If you have any questions about this privacy policy, you can open an issue on the project repository or contact the developer directly through the Chrome Web Store listing.</p>
+    </section>
+
+    <footer>
+      &copy; 2026 Prism Extension. All rights reserved.
+    </footer>
+
+  </div>
+</body>
+</html>

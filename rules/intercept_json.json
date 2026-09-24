@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        {
+          "header": "content-type",
+          "operation": "set",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "*",
+      "responseHeaders": [
+        {
+          "header": "content-type",
+          "values": ["*application/json*"]
+        }
+      ],
+      "resourceTypes": ["main_frame"]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        {
+          "header": "content-type",
+          "operation": "set",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "*",
+      "responseHeaders": [
+        {
+          "header": "content-type",
+          "values": ["*text/json*"]
+        }
+      ],
+      "resourceTypes": ["main_frame"]
+    }
+  }
+]

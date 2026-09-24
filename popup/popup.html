@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prism</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-root" id="popup-root">
+    <div class="popup-header">
+      <span class="popup-logo">Prism</span>
+      <span class="popup-badge" id="popup-badge">inactive</span>
+    </div>
+
+    <div class="popup-stats" id="popup-stats">
+      <div class="popup-stat" id="stat-keys">— keys</div>
+      <div class="popup-stat-sep">·</div>
+      <div class="popup-stat" id="stat-depth">depth —</div>
+      <div class="popup-stat-sep">·</div>
+      <div class="popup-stat" id="stat-size">— B</div>
+    </div>
+
+    <div class="popup-divider"></div>
+
+    <div class="popup-actions">
+      <button class="popup-btn popup-btn-primary" id="btn-toggle">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 8h14M8 1l7 7-7 7"/></svg>
+        Activate on this page
+      </button>
+    </div>
+
+    <div class="popup-divider"></div>
+
+    <div class="popup-section-label">Theme</div>
+    <div class="popup-theme-row">
+      <button class="popup-theme-btn" id="theme-dark" data-theme="dark">Dark</button>
+      <button class="popup-theme-btn" id="theme-light" data-theme="light">Light</button>
+      <button class="popup-theme-btn" id="theme-auto" data-theme="auto">Auto</button>
+    </div>
+
+    <div class="popup-divider"></div>
+
+    <div class="popup-footer">
+      <a href="#" id="btn-options" class="popup-link">Settings</a>
+      <span class="popup-sep">·</span>
+      <span class="popup-version" id="popup-version">v1.0.0</span>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
