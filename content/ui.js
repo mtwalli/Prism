@@ -117,20 +117,13 @@ window.Prism.buildShell = function buildShell(stats, currentTheme, formatBytes, 
   searchNav.appendChild(nextBtn);
 
   // Toolbar buttons
-  const collapseAllBtn = makeBtn('Collapse', ICONS.collapse_all, 'prism-collapse-all-btn', 'Collapse all nodes');
-  collapseAllBtn.classList.add('prism-btn-labeled');
-  const expandAllBtn   = makeBtn('Expand',   ICONS.expand_all,   'prism-expand-all-btn',   'Expand all nodes');
-  expandAllBtn.classList.add('prism-btn-labeled');
-  const rawBtn         = makeBtn('Raw',    ICONS.code,     'prism-raw-btn',      'Toggle raw/formatted view (Ctrl+\\)');
-  rawBtn.classList.add('prism-btn-labeled');
-  const sortBtn        = makeBtn('Sort',   ICONS.sort,     'prism-sort-btn',     'Sort object keys alphabetically');
-  sortBtn.classList.add('prism-btn-labeled');
-  const copyBtn        = makeBtn('Copy',   ICONS.copy,     'prism-copy-btn-all', 'Copy JSON (Ctrl+K)');
-  copyBtn.classList.add('prism-btn-labeled');
-  const dlBtn          = makeBtn('Save',   ICONS.download, 'prism-dl-btn',       'Download as .json');
-  dlBtn.classList.add('prism-btn-labeled');
-  const schemaBtn      = makeBtn('Schema', ICONS.schema,   'prism-schema-btn',   'Validate against JSON Schema');
-  schemaBtn.classList.add('prism-btn-labeled');
+  const collapseAllBtn = makeBtn('', ICONS.collapse_all, 'prism-collapse-all-btn', 'Collapse all');
+  const expandAllBtn   = makeBtn('', ICONS.expand_all,   'prism-expand-all-btn',   'Expand all');
+  const rawBtn         = makeBtn('', ICONS.code,     'prism-raw-btn',      'Toggle raw view (Ctrl+\\)');
+  const sortBtn        = makeBtn('', ICONS.sort,     'prism-sort-btn',     'Sort keys alphabetically');
+  const copyBtn        = makeBtn('', ICONS.copy,     'prism-copy-btn-all', 'Copy JSON (Ctrl+K)');
+  const dlBtn          = makeBtn('', ICONS.download, 'prism-dl-btn',       'Download as .json');
+  const schemaBtn      = makeBtn('', ICONS.schema,   'prism-schema-btn',   'Validate against JSON Schema');
   const themeBtn       = makeBtn('',       null,           'prism-theme-btn',    'Toggle theme');
   themeBtn.classList.add('prism-btn-icon');
 
