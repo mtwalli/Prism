@@ -2,15 +2,14 @@
   "manifest_version": 3,
   "name": "Prism",
   "version": "1.0.0",
-  "description": "Format, explore, and validate JSON — right in your browser. Collapsible tree view, instant search, JSON Schema validation, and dark/light themes.",
+  "description": "Format, explore, and validate JSON in your browser. Collapsible tree, instant search, JSON Schema validation, and dark/light themes.",
   "permissions": [
     "storage",
     "scripting",
-    "webRequest",
+    "tabs",
     "declarativeNetRequest",
     "declarativeNetRequestFeedback"
   ],
-  "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "background/service-worker.js"
   },

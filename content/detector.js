@@ -60,6 +60,7 @@
     }
 
     injectFormatter(trimmed, parseError);
+    chrome.runtime.sendMessage({ type: 'PRISM_JSON_DETECTED' }).catch(() => {});
   }
 
   // Listen for messages from popup/service worker
