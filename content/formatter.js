@@ -323,7 +323,7 @@
 
     const textarea = document.createElement('textarea');
     textarea.className = 'prism-schema-textarea';
-    textarea.placeholder = 'Paste your JSON Schema here…\n\nExample:\n{\n  "type": "object",\n  "required": ["id"],\n  "properties": {\n    "id": { "type": "integer" }\n  }\n}';
+    textarea.placeholder = 'Paste your JSON Schema here…';
     textarea.id = 'prism-schema-textarea';
     textarea.spellcheck = false;
 
@@ -334,10 +334,17 @@
     const actions = document.createElement('div');
     actions.className = 'prism-schema-actions';
 
-    const validateBtn = makeBtn('Validate', ICONS.check, 'prism-validate-btn', 'Validate JSON against schema');
-    const clearBtn    = makeBtn('Clear errors', null, 'prism-schema-clear-btn', 'Clear schema error highlights');
-    validateBtn.classList.add('prism-btn-filled', 'prism-btn-labeled');
-    clearBtn.classList.add('prism-btn-labeled');
+    const validateBtn = document.createElement('button');
+    validateBtn.id = 'prism-validate-btn';
+    validateBtn.title = 'Validate JSON against schema';
+    validateBtn.className = 'prism-schema-btn-action prism-schema-btn-filled';
+    validateBtn.textContent = 'Validate';
+
+    const clearBtn = document.createElement('button');
+    clearBtn.id = 'prism-schema-clear-btn';
+    clearBtn.title = 'Clear schema error highlights';
+    clearBtn.className = 'prism-schema-btn-action';
+    clearBtn.textContent = 'Clear errors';
     actions.appendChild(validateBtn);
     actions.appendChild(clearBtn);
 
