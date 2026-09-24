@@ -414,6 +414,7 @@ body:has(#prism-root.prism-theme-light)            { background: #fffbfe !import
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
+  outline: none;
   transition: color var(--tf) var(--ease),
               background var(--tf) var(--ease);
   user-select: none;
@@ -465,22 +466,40 @@ body:has(#prism-root.prism-theme-light)            { background: #fffbfe !import
 .prism-btn.prism-btn-labeled {
   border-radius: var(--r-xl);
   width: auto;
-  height: 32px;
-  padding: 0 14px 0 10px;
-  gap: 6px;
-  background: var(--md-surface-2);
+  height: 36px;
+  min-width: 100px;
+  padding: 0 18px;
+  gap: 7px;
+  background: transparent;
+  border: 1.5px solid var(--md-outline-var);
+  color: var(--md-on-surf-var);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  justify-content: center;
+  outline: none;
+  transition: border-color var(--tf) var(--ease),
+              color var(--tf) var(--ease),
+              background var(--tf) var(--ease);
 }
 .prism-btn.prism-btn-labeled::before { border-radius: var(--r-xl); background: currentColor; }
+.prism-btn.prism-btn-labeled:hover { border-color: var(--md-primary); color: var(--md-primary); }
+.prism-btn.prism-btn-labeled:focus-visible { box-shadow: 0 0 0 2px var(--md-primary); }
 .prism-btn.prism-btn-labeled .prism-btn-label { display: inline; }
-.prism-btn.prism-btn-labeled.prism-btn-no-icon { padding: 0 14px; }
+.prism-btn.prism-btn-labeled .prism-btn-icon-wrap { width: 16px; height: 16px; }
+.prism-btn.prism-btn-labeled .prism-btn-icon-wrap svg { width: 16px; height: 16px; }
 
-/* Filled variant for Validate button */
-.prism-btn.prism-btn-filled {
+/* Filled (primary) variant — Validate button */
+.prism-btn.prism-btn-labeled.prism-btn-filled {
   background: var(--md-primary);
+  border-color: transparent;
   color: var(--md-on-primary);
 }
-.prism-btn.prism-btn-filled::before { background: #000; }
-#prism-root.prism-theme-dark .prism-btn.prism-btn-filled {
+.prism-btn.prism-btn-labeled.prism-btn-filled:hover { border-color: transparent; color: var(--md-on-primary); }
+.prism-btn.prism-btn-labeled.prism-btn-filled::before { background: #000; }
+.prism-btn.prism-btn-labeled.prism-btn-filled:hover::before  { opacity: 0.08; }
+.prism-btn.prism-btn-labeled.prism-btn-filled:active::before { opacity: 0.16; }
+#prism-root.prism-theme-dark .prism-btn.prism-btn-labeled.prism-btn-filled {
   background: var(--md-prim-cont);
   color: var(--md-on-prim-cont);
 }
@@ -511,8 +530,9 @@ body:has(#prism-root.prism-theme-light)            { background: #fffbfe !import
   right: 24px;
   top: 76px;              /* below the app bar */
   width: 480px;
-  min-width: 340px;
-  min-height: 200px;
+  min-width: 320px;
+  max-width: calc(100vw - 48px);
+  min-height: 280px;
   max-height: calc(100% - 100px);
   background: var(--md-surface-1);
   border-radius: var(--r);
@@ -607,9 +627,10 @@ body:has(#prism-root.prism-theme-light)            { background: #fffbfe !import
   flex-direction: column;
   flex: 1;
   overflow: hidden;
-  padding: 16px;
+  padding: 16px 16px 12px;
   gap: 12px;
   min-height: 0;
+  box-sizing: border-box;
 }
 
 /* Field label — MD3 supporting text */
@@ -630,7 +651,7 @@ body:has(#prism-root.prism-theme-light)            { background: #fffbfe !import
   color: var(--md-primary);
 }
 
-.prism-schema-textarea {
+#prism-root .prism-schema-textarea {
   width: 100%;
   flex: 1;
   min-height: 120px;
@@ -641,7 +662,7 @@ body:has(#prism-root.prism-theme-light)            { background: #fffbfe !import
   font-family: var(--font-mono);
   font-size: 13px;
   line-height: 1.65;
-  padding: 12px 14px;
+  padding: 14px 16px;
   resize: none;
   outline: none;
   box-sizing: border-box;
@@ -649,7 +670,7 @@ body:has(#prism-root.prism-theme-light)            { background: #fffbfe !import
               box-shadow   var(--t) var(--ease);
   tab-size: 2;
 }
-.prism-schema-textarea:focus {
+#prism-root .prism-schema-textarea:focus {
   border-color: var(--md-primary);
   box-shadow: 0 0 0 2px rgba(208,188,255,0.18);
 }
@@ -660,7 +681,7 @@ body:has(#prism-root.prism-theme-light)            { background: #fffbfe !import
   border-color: #6750a4;
   box-shadow: 0 0 0 2px rgba(103,80,164,0.12);
 }
-.prism-schema-textarea::placeholder {
+#prism-root .prism-schema-textarea::placeholder {
   color: var(--md-on-surf-var);
   opacity: 0.5;
 }
@@ -669,21 +690,64 @@ body:has(#prism-root.prism-theme-light)            { background: #fffbfe !import
 .prism-schema-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 10px;
   flex-shrink: 0;
+  padding-top: 4px;
 }
 
-/* Primary filled button variant for Validate */
-.prism-btn.prism-btn-filled {
-  background: var(--md-primary);
-  color: var(--md-on-primary);
+/* Schema dialog buttons — standalone, no inheritance from toolbar .prism-btn */
+#prism-root .prism-schema-btn-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 24px;
+  border-radius: 18px;
+  border: 1.5px solid var(--md-outline-var);
+  background: transparent;
+  color: var(--md-on-surface);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  outline: none;
+  white-space: nowrap;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
 }
-.prism-btn.prism-btn-filled:hover::before  { opacity: 0.1; }
-.prism-btn.prism-btn-filled:active::before { opacity: 0.18; }
-#prism-root.prism-theme-dark .prism-btn.prism-btn-filled {
+#prism-root .prism-schema-btn-action:hover {
+  border-color: var(--md-primary);
+  color: var(--md-primary);
+  background: rgba(103,80,164,0.06);
+}
+#prism-root.prism-theme-dark .prism-schema-btn-action:hover {
+  background: rgba(208,188,255,0.08);
+}
+#prism-root .prism-schema-btn-action:active { opacity: 0.8; }
+#prism-root .prism-schema-btn-action:focus-visible {
+  box-shadow: 0 0 0 2px var(--md-primary);
+}
+
+#prism-root .prism-schema-btn-action.prism-schema-btn-filled {
+  background: var(--md-primary);
+  border-color: transparent;
+  color: #fff;
+}
+#prism-root .prism-schema-btn-action.prism-schema-btn-filled:hover {
+  background: var(--md-primary);
+  border-color: transparent;
+  color: #fff;
+  opacity: 0.92;
+}
+#prism-root.prism-theme-dark .prism-schema-btn-action.prism-schema-btn-filled {
   background: var(--md-prim-cont);
   color: var(--md-on-prim-cont);
 }
+#prism-root.prism-theme-dark .prism-schema-btn-action.prism-schema-btn-filled:hover {
+  opacity: 0.9;
+}
+
 
 /* ── Results section ──────────────────────────────────────────────────── */
 .prism-schema-results-wrap {
