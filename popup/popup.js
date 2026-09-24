@@ -21,7 +21,7 @@ async function init() {
       updateStats(response.stats);
       document.getElementById('popup-badge').textContent = 'active';
       document.getElementById('popup-badge').classList.add('active');
-      document.getElementById('btn-toggle').textContent = 'Toggle formatter';
+      document.getElementById('btn-toggle-label').textContent = 'Toggle formatter';
     }
   } catch (_) {
     // Tab doesn't have the content script or isn't a JSON page

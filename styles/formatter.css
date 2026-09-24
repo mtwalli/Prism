@@ -962,10 +962,34 @@ body:has(#prism-root.prism-theme-light)            { background: #fffbfe !import
   text-decoration: underline;
   text-underline-offset: 2px;
   text-decoration-color: rgba(166,227,161,0.35);
-  cursor: pointer;
   transition: text-decoration-color var(--tf);
 }
 .prism-value-url:hover { text-decoration-color: var(--tok-str); }
+
+/* Explicit open-URL button (hover-visible, replaces click-on-value) */
+#prism-root .prism-open-url {
+  background: none;
+  border: 1px solid transparent;
+  color: var(--md-outline);
+  cursor: pointer;
+  margin-left: 2px;
+  opacity: 0;
+  padding: 1px 5px;
+  height: 18px;
+  border-radius: var(--r-xs);
+  display: inline-flex;
+  align-items: center;
+  transition: opacity var(--tf), background var(--tf), color var(--tf), border-color var(--tf);
+  flex-shrink: 0;
+}
+#prism-root .prism-open-url svg { width: 11px; height: 11px; }
+.prism-node-header:hover .prism-open-url { opacity: 1; }
+#prism-root .prism-open-url:hover {
+  background: var(--md-surface-3);
+  border-color: var(--md-outline-var);
+  color: var(--tok-str);
+  opacity: 1;
+}
 
 /* Indent guides */
 #prism-root .prism-children {
@@ -985,7 +1009,7 @@ body:has(#prism-root.prism-theme-light)            { background: #fffbfe !import
 #prism-root .prism-children:hover::before { background: var(--ind-hover); }
 
 /* Per-value copy button */
-.prism-copy-val {
+#prism-root .prism-copy-val {
   background: none;
   border: 1px solid transparent;
   color: var(--md-outline);
@@ -1000,11 +1024,36 @@ body:has(#prism-root.prism-theme-light)            { background: #fffbfe !import
   transition: opacity var(--tf), background var(--tf), color var(--tf), border-color var(--tf);
   flex-shrink: 0;
 }
-.prism-copy-val svg { width: 11px; height: 11px; }
-.prism-copy-val:hover {
+#prism-root .prism-copy-val svg { width: 11px; height: 11px; }
+#prism-root .prism-copy-val:hover {
   background: var(--md-surface-3);
   border-color: var(--md-outline-var);
   color: var(--md-on-surface);
+  opacity: 1;
+}
+
+/* Path copy button — same shape as value copy, shown on hover */
+#prism-root .prism-copy-path {
+  background: none;
+  border: 1px solid transparent;
+  color: var(--md-outline);
+  cursor: pointer;
+  margin-left: 2px;
+  opacity: 0;
+  padding: 1px 5px;
+  height: 18px;
+  border-radius: var(--r-xs);
+  display: inline-flex;
+  align-items: center;
+  transition: opacity var(--tf), background var(--tf), color var(--tf), border-color var(--tf);
+  flex-shrink: 0;
+}
+#prism-root .prism-copy-path svg { width: 11px; height: 11px; }
+.prism-node-header:hover .prism-copy-path { opacity: 1; }
+#prism-root .prism-copy-path:hover {
+  background: var(--md-surface-3);
+  border-color: var(--md-outline-var);
+  color: var(--md-primary);
   opacity: 1;
 }
 

@@ -8,44 +8,65 @@
 </head>
 <body>
   <div class="popup-root" id="popup-root">
+
+    <!-- App bar -->
     <div class="popup-header">
-      <span class="popup-logo">Prism</span>
+      <div class="popup-logo">
+        <svg class="popup-logo-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L22 9L12 22L2 9Z" fill="currentColor"/>
+        </svg>
+        <span class="popup-logo-word">Prism</span>
+      </div>
       <span class="popup-badge" id="popup-badge">inactive</span>
     </div>
 
+    <!-- Stats row -->
     <div class="popup-stats" id="popup-stats">
-      <div class="popup-stat" id="stat-keys">— keys</div>
-      <div class="popup-stat-sep">·</div>
-      <div class="popup-stat" id="stat-depth">depth —</div>
-      <div class="popup-stat-sep">·</div>
-      <div class="popup-stat" id="stat-size">— B</div>
+      <span id="stat-keys">— keys</span>
+      <span class="popup-stats-sep">·</span>
+      <span id="stat-depth">depth —</span>
+      <span class="popup-stats-sep">·</span>
+      <span id="stat-size">— B</span>
     </div>
 
     <div class="popup-divider"></div>
 
+    <!-- Primary action -->
     <div class="popup-actions">
-      <button class="popup-btn popup-btn-primary" id="btn-toggle">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 8h14M8 1l7 7-7 7"/></svg>
-        Activate on this page
+      <button class="popup-btn popup-btn-filled" id="btn-toggle">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M8 5v14l11-7z"/></svg>
+        <span id="btn-toggle-label">Activate on this page</span>
       </button>
     </div>
 
     <div class="popup-divider"></div>
 
+    <!-- Theme picker -->
     <div class="popup-section-label">Theme</div>
     <div class="popup-theme-row">
-      <button class="popup-theme-btn" id="theme-dark" data-theme="dark">Dark</button>
-      <button class="popup-theme-btn" id="theme-light" data-theme="light">Light</button>
-      <button class="popup-theme-btn" id="theme-auto" data-theme="auto">Auto</button>
+      <button class="popup-theme-btn" id="theme-dark" data-theme="dark">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
+        Dark
+      </button>
+      <button class="popup-theme-btn" id="theme-light" data-theme="light">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1z"/></svg>
+        Light
+      </button>
+      <button class="popup-theme-btn" id="theme-auto" data-theme="auto">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10zm0-2V4c4.42 0 8 3.58 8 8s-3.58 8-8 8z"/></svg>
+        Auto
+      </button>
     </div>
 
     <div class="popup-divider"></div>
 
+    <!-- Footer -->
     <div class="popup-footer">
       <a href="#" id="btn-options" class="popup-link">Settings</a>
-      <span class="popup-sep">·</span>
+      <span class="popup-footer-sep">·</span>
       <span class="popup-version" id="popup-version">v1.0.0</span>
     </div>
+
   </div>
   <script src="popup.js"></script>
 </body>

@@ -10,6 +10,9 @@
     "declarativeNetRequest",
     "declarativeNetRequestFeedback"
   ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
   "background": {
     "service_worker": "background/service-worker.js"
   },
@@ -22,7 +25,14 @@
     },
     {
       "matches": ["<all_urls>"],
-      "js": ["vendor/ajv.bundle.js", "content/formatter.js"],
+      "js": [
+          "vendor/ajv.bundle.js",
+          "content/ui.js",
+          "content/renderer.js",
+          "content/search.js",
+          "content/schema.js",
+          "content/formatter.js"
+        ],
       "run_at": "document_idle",
       "all_frames": false
     }
