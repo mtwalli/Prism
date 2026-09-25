@@ -16,7 +16,9 @@ window.Prism._renderValue = function renderValue(value, key, path, depth, parent
   nodeEl.dataset.path = path;
   nodeEl.dataset.type = type;
 
-  if (type === 'object' || type === 'array') {
+  if (type === 'array' && window.Prism._isVector(value)) {
+    window.Prism._renderVector(value, key, path, nodeEl, isLast, opts);
+  } else if (type === 'object' || type === 'array') {
     window.Prism._renderCollapsible(value, key, path, depth, nodeEl, opts, isLast);
   } else {
     window.Prism._renderScalar(value, key, path, type, depth, nodeEl, isLast);
@@ -282,4 +284,143 @@ window.Prism.expandAll = function expandAll(treeEl) {
   treeEl.querySelectorAll('.prism-node.prism-collapsed').forEach(el => {
     el.classList.remove('prism-collapsed');
   });
+};
+
+// ── Vector detection ───────────────────────────────────────────────────────
+// Treat an array as a vector if: all numbers, length ≥ 8,
+// and at least half the values are non-integer floats.
+window.Prism._isVector = function isVector(arr) {
+  if (!Array.isArray(arr) || arr.length < 8) return false;
+  let floatCount = 0;
+  for (let i = 0; i < arr.length; i++) {
+    if (typeof arr[i] !== 'number' || !isFinite(arr[i])) return false;
+    if (arr[i] % 1 !== 0) floatCount++;
+  }
+  return floatCount >= arr.length * 0.5;
+};
+
+// ── Vector renderer ────────────────────────────────────────────────────────
+window.Prism._renderVector = function renderVector(arr, key, path, nodeEl, isLast, opts) {
+  nodeEl.classList.add('prism-vector-node');
+
+  // Compute stats
+  let min = Infinity, max = -Infinity, sum = 0;
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] < min) min = arr[i];
+    if (arr[i] > max) max = arr[i];
+    sum += arr[i];
+  }
+  const mean = sum / arr.length;
+  const dims = arr.length;
+
+  let sumSq = 0;
+  for (let i = 0; i < arr.length; i++) sumSq += arr[i] * arr[i];
+  const magnitude = Math.sqrt(sumSq);
+
+  const fmt = n => Number.isInteger(n) ? n : n.toPrecision(4);
+  const ICONS = window.Prism.ICONS;
+
+  // ── Compact header (always visible) ───────────────────────────────────────
+  const header = document.createElement('div');
+  header.className = 'prism-node-header prism-vector-header';
+
+  // Reuse the standard toggle button — rotates when expanded
+  const toggle = document.createElement('button');
+  toggle.className = 'prism-toggle';
+  toggle.setAttribute('aria-label', 'Toggle vector');
+  toggle.innerHTML = ICONS.triangle;
+  header.appendChild(toggle);
+
+  if (key !== null) {
+    header.appendChild(window.Prism._makeKey(key));
+    header.appendChild(window.Prism._makeColon());
+  }
+
+  const badge = document.createElement('span');
+  badge.className = 'prism-vector-badge';
+  badge.textContent = 'vector';
+  header.appendChild(badge);
+
+  const dimsEl = document.createElement('span');
+  dimsEl.className = 'prism-vector-dim';
+  dimsEl.textContent = `${dims}d`;
+  header.appendChild(dimsEl);
+
+  header.appendChild(window.Prism._makeSparkline(arr));
+
+  const stats = document.createElement('span');
+  stats.className = 'prism-vector-stats';
+  stats.innerHTML =
+    `<span title="minimum">min <b>${fmt(min)}</b></span>` +
+    `<span title="maximum">max <b>${fmt(max)}</b></span>` +
+    `<span title="mean">μ <b>${fmt(mean)}</b></span>` +
+    `<span title="L2 magnitude">‖v‖ <b>${fmt(magnitude)}</b></span>`;
+  header.appendChild(stats);
+
+  const comma = document.createElement('span');
+  comma.className = 'prism-comma';
+  comma.textContent = isLast ? '' : ',';
+  header.appendChild(comma);
+
+  header.appendChild(window.Prism._makeCopyBtn(() => JSON.stringify(arr)));
+  header.appendChild(window.Prism._makePathBtn(path));
+
+  nodeEl.appendChild(header);
+
+  // ── Expanded children (rendered lazily on first expand) ───────────────────
+  const childrenEl = document.createElement('div');
+  childrenEl.className = 'prism-children';
+  nodeEl.appendChild(childrenEl);
+
+  const bracketClose = document.createElement('div');
+  bracketClose.className = 'prism-bracket-close';
+  bracketClose.textContent = ']' + (isLast ? '' : ',');
+  nodeEl.appendChild(bracketClose);
+
+  // Start collapsed
+  nodeEl.classList.add('prism-collapsed');
+  let childrenBuilt = false;
+
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isCollapsed = nodeEl.classList.toggle('prism-collapsed');
+    if (!isCollapsed && !childrenBuilt) {
+      // Lazy-render children on first expand
+      childrenBuilt = true;
+      arr.forEach((item, i) => {
+        window.Prism._renderValue(item, null, `${path}[${i}]`, 1, childrenEl, opts || {}, i === arr.length - 1);
+      });
+    }
+  });
+
+  window.Prism.state.searchIndexCache.push({
+    path, keyText: key ?? '', valueText: `vector ${dims}d`, nodeEl: header,
+  });
+};
+
+window.Prism._makeSparkline = function makeSparkline(arr) {
+  const BARS = 28;
+  const step = Math.max(1, Math.floor(arr.length / BARS));
+  const samples = [];
+  for (let i = 0; i < arr.length; i += step) samples.push(arr[i]);
+
+  const sMin = Math.min(...samples);
+  const sMax = Math.max(...samples);
+  const range = sMax - sMin || 1;
+
+  // SVG bar chart
+  const W = 56, H = 16, barW = W / samples.length;
+  let bars = '';
+  samples.forEach((v, i) => {
+    const h = Math.max(1, ((v - sMin) / range) * H);
+    const y = H - h;
+    // colour by sign: positive = primary, negative = error
+    const cls = v >= 0 ? 'prism-spark-pos' : 'prism-spark-neg';
+    bars += `<rect class="${cls}" x="${(i * barW).toFixed(1)}" y="${y.toFixed(1)}" width="${(barW - 0.5).toFixed(1)}" height="${h.toFixed(1)}"/>`;
+  });
+
+  const wrap = document.createElement('span');
+  wrap.className = 'prism-vector-spark';
+  wrap.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">${bars}</svg>`;
+  return wrap;
 };
