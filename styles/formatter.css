@@ -1017,6 +1017,9 @@ body:has(#prism-root.prism-theme-light)            { background: #fffbfe !import
 ══════════════════════════════════════════════════════════════════════════ */
 .prism-vector-header { align-items: center; }
 
+/* Vector nodes get a little breathing room above */
+.prism-vector-node > .prism-node-header { margin-top: 3px; margin-bottom: 3px; }
+
 /* Outer pill that contains the whole widget */
 .prism-vector-chip {
   display: inline-flex;
@@ -1029,8 +1032,10 @@ body:has(#prism-root.prism-theme-light)            { background: #fffbfe !import
   overflow: hidden;
   flex-shrink: 0;
   vertical-align: middle;
+  cursor: pointer;
   transition: border-color var(--tf) var(--ease);
 }
+.prism-vector-chip:hover,
 .prism-vector-header:hover .prism-vector-chip { border-color: var(--md-primary); }
 
 /* "vec·128" label */

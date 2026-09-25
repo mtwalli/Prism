@@ -394,17 +394,18 @@ window.Prism._renderVector = function renderVector(arr, key, path, nodeEl, isLas
   nodeEl.classList.add('prism-collapsed');
   let childrenBuilt = false;
 
-  toggle.addEventListener('click', (e) => {
+  const doToggle = (e) => {
     e.stopPropagation();
     const isCollapsed = nodeEl.classList.toggle('prism-collapsed');
     if (!isCollapsed && !childrenBuilt) {
-      // Lazy-render children on first expand
       childrenBuilt = true;
       arr.forEach((item, i) => {
         window.Prism._renderValue(item, null, `${path}[${i}]`, 1, childrenEl, opts || {}, i === arr.length - 1);
       });
     }
-  });
+  };
+  toggle.addEventListener('click', doToggle);
+  chip.addEventListener('click', doToggle);
 
   window.Prism.state.searchIndexCache.push({
     path, keyText: key ?? '', valueText: `vector ${dims}d`, nodeEl: header,
