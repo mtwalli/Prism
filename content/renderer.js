@@ -317,14 +317,17 @@ window.Prism._renderVector = function renderVector(arr, key, path, nodeEl, isLas
   for (let i = 0; i < arr.length; i++) sumSq += arr[i] * arr[i];
   const magnitude = Math.sqrt(sumSq);
 
-  const fmt = n => Number.isInteger(n) ? n : n.toPrecision(4);
+  const fmt = n => {
+    if (Number.isInteger(n)) return String(n);
+    const abs = Math.abs(n);
+    return abs >= 100 ? n.toFixed(1) : abs >= 1 ? n.toFixed(3) : n.toFixed(4);
+  };
   const ICONS = window.Prism.ICONS;
 
   // ── Compact header (always visible) ───────────────────────────────────────
   const header = document.createElement('div');
   header.className = 'prism-node-header prism-vector-header';
 
-  // Reuse the standard toggle button — rotates when expanded
   const toggle = document.createElement('button');
   toggle.className = 'prism-toggle';
   toggle.setAttribute('aria-label', 'Toggle vector');
@@ -336,26 +339,36 @@ window.Prism._renderVector = function renderVector(arr, key, path, nodeEl, isLas
     header.appendChild(window.Prism._makeColon());
   }
 
-  const badge = document.createElement('span');
-  badge.className = 'prism-vector-badge';
-  badge.textContent = 'vector';
-  header.appendChild(badge);
+  // Single chip wrapping the entire visual widget
+  const chip = document.createElement('span');
+  chip.className = 'prism-vector-chip';
 
-  const dimsEl = document.createElement('span');
-  dimsEl.className = 'prism-vector-dim';
-  dimsEl.textContent = `${dims}d`;
-  header.appendChild(dimsEl);
+  const label = document.createElement('span');
+  label.className = 'prism-vector-label';
+  label.textContent = `vec·${dims}`;
+  chip.appendChild(label);
 
-  header.appendChild(window.Prism._makeSparkline(arr));
+  const divider1 = document.createElement('span');
+  divider1.className = 'prism-vector-sep';
+  chip.appendChild(divider1);
+
+  chip.appendChild(window.Prism._makeSparkline(arr));
+
+  const divider2 = document.createElement('span');
+  divider2.className = 'prism-vector-sep';
+  chip.appendChild(divider2);
 
   const stats = document.createElement('span');
   stats.className = 'prism-vector-stats';
   stats.innerHTML =
-    `<span title="minimum">min <b>${fmt(min)}</b></span>` +
-    `<span title="maximum">max <b>${fmt(max)}</b></span>` +
-    `<span title="mean">μ <b>${fmt(mean)}</b></span>` +
-    `<span title="L2 magnitude">‖v‖ <b>${fmt(magnitude)}</b></span>`;
-  header.appendChild(stats);
+    `<span title="min · max">${fmt(min)} · ${fmt(max)}</span>` +
+    `<span class="prism-vector-stat-sep">·</span>` +
+    `<span title="mean">μ ${fmt(mean)}</span>` +
+    `<span class="prism-vector-stat-sep">·</span>` +
+    `<span title="L2 norm">‖${fmt(magnitude)}‖</span>`;
+  chip.appendChild(stats);
+
+  header.appendChild(chip);
 
   const comma = document.createElement('span');
   comma.className = 'prism-comma';
@@ -399,28 +412,45 @@ window.Prism._renderVector = function renderVector(arr, key, path, nodeEl, isLas
 };
 
 window.Prism._makeSparkline = function makeSparkline(arr) {
-  const BARS = 28;
-  const step = Math.max(1, Math.floor(arr.length / BARS));
+  const BARS = 40;
+  const step = Math.max(1, arr.length / BARS);
   const samples = [];
-  for (let i = 0; i < arr.length; i += step) samples.push(arr[i]);
+  for (let i = 0; i < BARS && i * step < arr.length; i++) {
+    samples.push(arr[Math.floor(i * step)]);
+  }
 
   const sMin = Math.min(...samples);
   const sMax = Math.max(...samples);
+  const hasNeg = sMin < 0;
   const range = sMax - sMin || 1;
 
-  // SVG bar chart
-  const W = 56, H = 16, barW = W / samples.length;
+  const W = 72, H = 20, gap = 0.8;
+  const barW = (W / samples.length) - gap;
+  // Zero-line y position (only meaningful when values cross zero)
+  const zeroY = hasNeg ? H - ((0 - sMin) / range) * H : H;
+
   let bars = '';
   samples.forEach((v, i) => {
-    const h = Math.max(1, ((v - sMin) / range) * H);
-    const y = H - h;
-    // colour by sign: positive = primary, negative = error
-    const cls = v >= 0 ? 'prism-spark-pos' : 'prism-spark-neg';
-    bars += `<rect class="${cls}" x="${(i * barW).toFixed(1)}" y="${y.toFixed(1)}" width="${(barW - 0.5).toFixed(1)}" height="${h.toFixed(1)}"/>`;
+    const x = (i * (W / samples.length)).toFixed(1);
+    if (hasNeg) {
+      const barH = Math.abs(((v / range) * H));
+      const y = v >= 0 ? (zeroY - barH).toFixed(1) : zeroY.toFixed(1);
+      const cls = v >= 0 ? 'prism-spark-pos' : 'prism-spark-neg';
+      bars += `<rect class="${cls}" x="${x}" y="${y}" width="${barW.toFixed(1)}" height="${Math.max(1, barH).toFixed(1)}" rx="0.5"/>`;
+    } else {
+      const h = Math.max(1.5, ((v - sMin) / range) * H);
+      const y = (H - h).toFixed(1);
+      bars += `<rect class="prism-spark-pos" x="${x}" y="${y}" width="${barW.toFixed(1)}" height="${h.toFixed(1)}" rx="0.5"/>`;
+    }
   });
+
+  // Zero-axis line when values cross zero
+  const axis = hasNeg && sMax > 0
+    ? `<line class="prism-spark-axis" x1="0" y1="${zeroY.toFixed(1)}" x2="${W}" y2="${zeroY.toFixed(1)}"/>`
+    : '';
 
   const wrap = document.createElement('span');
   wrap.className = 'prism-vector-spark';
-  wrap.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">${bars}</svg>`;
+  wrap.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">${axis}${bars}</svg>`;
   return wrap;
 };

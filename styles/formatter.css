@@ -1015,55 +1015,72 @@ body:has(#prism-root.prism-theme-light)            { background: #fffbfe !import
 /* ══════════════════════════════════════════════════════════════════════════
    VECTOR WIDGET
 ══════════════════════════════════════════════════════════════════════════ */
-.prism-vector-header {
-  gap: 6px;
-  flex-wrap: nowrap;
+.prism-vector-header { align-items: center; }
+
+/* Outer pill that contains the whole widget */
+.prism-vector-chip {
+  display: inline-flex;
   align-items: center;
-}
-
-.prism-vector-badge {
-  font-family: var(--font-ui);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--md-on-primary);
-  background: var(--md-primary);
-  border-radius: 4px;
-  padding: 1px 5px;
+  gap: 0;
+  height: 24px;
+  background: var(--md-surface-3);
+  border: 1px solid var(--md-outline-var);
+  border-radius: 12px;
+  overflow: hidden;
   flex-shrink: 0;
-  opacity: 0.85;
+  vertical-align: middle;
+  transition: border-color var(--tf) var(--ease);
 }
+.prism-vector-header:hover .prism-vector-chip { border-color: var(--md-primary); }
 
-.prism-vector-dim {
+/* "vec·128" label */
+.prism-vector-label {
   font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   color: var(--md-primary);
+  padding: 0 8px 0 10px;
+  white-space: nowrap;
   flex-shrink: 0;
 }
 
+/* Thin vertical dividers between sections */
+.prism-vector-sep {
+  width: 1px;
+  height: 14px;
+  background: var(--md-outline-var);
+  flex-shrink: 0;
+}
+
+/* Sparkline area */
 .prism-vector-spark {
   display: inline-flex;
   align-items: center;
+  padding: 0 6px;
   flex-shrink: 0;
-  opacity: 0.8;
 }
 .prism-vector-spark svg { display: block; }
-.prism-spark-pos { fill: var(--md-primary); }
-.prism-spark-neg { fill: var(--md-error); }
+.prism-spark-pos { fill: var(--md-primary); opacity: 0.75; }
+.prism-spark-neg { fill: var(--md-error);   opacity: 0.75; }
+.prism-spark-axis { stroke: var(--md-outline-var); stroke-width: 0.5; }
 
+/* Stats */
 .prism-vector-stats {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: 10px;
   color: var(--md-on-surf-var);
+  padding: 0 10px 0 6px;
+  white-space: nowrap;
   flex-shrink: 0;
 }
-.prism-vector-stats span { white-space: nowrap; }
-.prism-vector-stats b { color: var(--md-on-surface); font-weight: 600; }
+.prism-vector-stat-sep {
+  color: var(--md-outline-var);
+  font-size: 9px;
+}
 
 /* ══════════════════════════════════════════════════════════════════════════
    SEARCH HIGHLIGHTS
